@@ -15,10 +15,9 @@ const createWindow = () => {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadFile(path.join(__dirname, "login.html")); // main window
   mainWindow.webContents.openDevTools();
 
-  // Handle the button click event to open next.html
   ipcMain.on("open-next-page", () => {
     const nextWindow = new BrowserWindow({
       width: 800,
@@ -45,5 +44,3 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
-require("./database.js");

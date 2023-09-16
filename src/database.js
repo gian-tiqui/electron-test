@@ -7,11 +7,11 @@ var conn = mysql.createConnection({
   database: "test",
 });
 
-const temp = mysql.createConnection({
+const x = mysql.createConnection({
   host: "fdb1033.awardspace.net",
-  user: "4373894_mahdb",
-  password: "hakdogo123",
-  database: "4373894_mahdb",
+  user: "4373942_contacts",
+  password: "hulaanmo12",
+  database: "4373942_contacts",
 });
 
 export { conn, mysql };

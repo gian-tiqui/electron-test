@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>CRUD App</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-black text-white">
+    <button id="login">Login</button>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2>Sign Up</h2>
+                <form id="SignUpForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign up</button>
+                </form>
+                <div id="signUpResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        const { ipcRenderer } = require('electron');
+        import { conn } from "./database.js";
+
+        const login = document.getElementById("login");
+
+        login.addEventListener("click", () => {
+            window.location.href = 'login.html';
+        })
+
+        document.getElementById('SignUpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+
+            try {
+                const isUserValid = await userExist(email, name);
+
+                if (!isUserValid) {
+                    const q = "INSERT INTO `users` (name, email, pass) VALUES (?, ?, ?)";
+
+                    conn.query(q, [name, email, password], (err, res) => {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            window.location.href = 'next.html';
+                        }
+                    })
+                } else {
+                    document.getElementById('signUpResult').innerText = 'Email or Name is already in use by another user';
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        const userExist = async (email, name) => {
+            return new Promise((resolve, reject) => {
+                const query = "SELECT * FROM `users`";
+
+                conn.query(query, (err, res) => {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        for (const data of res) {
+                            if (data.email === email || data.name === name) {
+                                resolve(true);
+                                return;
+                            }
+                        }
+                        resolve(false);
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+
+</html>

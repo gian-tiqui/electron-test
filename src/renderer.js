@@ -1,4 +1,4 @@
-import { conn } from "./database.js";
+import { conn, mysql } from "./database.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.getElementById("addButton");
@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return row;
   }
 
-  function loadData() {
+  async function loadData() {
     const query = "SELECT * FROM `clients`";
-    conn.query(query, (err, res) => {
+    await conn.query(query, (err, res) => {
       if (err) {
         console.error(err);
       } else {

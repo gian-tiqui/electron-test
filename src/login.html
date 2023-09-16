@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>CRUD App</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-black text-white">
+  <button id="sign-up">Sign up</button>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div id="loginResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const { ipcRenderer } = require('electron');
+    import { conn } from "./database.js";
+
+    const signUpBtn = document.getElementById("sign-up");
+
+    signUpBtn.addEventListener("click", () => {
+      window.location.href = 'signup.html';
+    })
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const isUserValid = await verifyUser(email, password);
+
+        if (isUserValid) {
+          window.location.href = 'next.html';
+        } else {
+          document.getElementById('loginResult').innerText = 'Invalid credentials';
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    const verifyUser = async (email, password) => {
+      return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM `users`";
+
+        conn.query(query, (err, res) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            for (const data of res) {
+              if (data.email === email && data.pass === password) {
+                resolve(true);
+                return;
+              }
+            }
+            resolve(false);
+          }
+        });
+      });
+    };
+  </script>
+</body>
+
+</html>
