@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>CRUD App</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body class="bg-black text-white">
+
+    <button id="updateButton">edit</button>
+    <form id="addForm">
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Email" id="email">
+        <input type="text" placeholder="Phone" id="phone">
+        <input type="text" placeholder="Address" id="address">
+        <button type="button" id="addButton">Add</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyy">
+            <!-- Table rows will be added dynamically here -->
+        </tbody>
+    </table>
+
+    <script type="module" src="./renderer.js"></script>
+</body>
+
+</html>

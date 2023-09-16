@@ -3,72 +3,20 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Hello World!</title>
+  <title>CRUD App</title>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 
 <body class="bg-black text-white">
+  <button id="nextButton" class="btn btn-primary">Next</button>
 
-  <button>Add</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="tbodyy">
-
-    </tbody>
-  </table>
-  <script type="module">
-    import { conn } from "./database.js";
-
-    let query = "SELECT * FROM `clients`";
-    let tbody = document.getElementById("tbodyy");
-
-    conn.query(query, (err, res) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(res);
-
-        res.map(client => {
-          const row = document.createElement("tr");
-
-          const nameCol = document.createElement("td");
-          nameCol.textContent = client.name;
-
-          const emailCol = document.createElement("td");
-          emailCol.textContent = client.email;
-
-          const phoneCol = document.createElement("td");
-          phoneCol.textContent = client.phone;
-
-          const addressCol = document.createElement("td");
-          addressCol.textContent = client.address;
-
-          const btn = document.createElement("button");
-          btn.textContent = "Edit";
-
-          const dlt = document.createElement("button");
-          dlt.textContent = "Delete";
-
-          row.appendChild(nameCol);
-          row.appendChild(emailCol);
-          row.appendChild(phoneCol);
-          row.appendChild(addressCol);
-          row.appendChild(btn);
-          row.appendChild(dlt);
-          tbody.appendChild(row);
-        });
-      }
-    });
-  </script>
 </body>
+<script>
+  const { ipcRenderer } = require('electron');
+
+  document.getElementById('nextButton').addEventListener('click', () => {
+    ipcRenderer.send('open-next-page');
+  });
+</script>
 
 </html>
