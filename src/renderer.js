@@ -61,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadData() {
-    const query = "SELECT * FROM `clients`";
+    const query =
+      "SELECT * FROM `clients` INNER JOIN `users` ON users.UID = clients.uid WHERE users.UID = 1";
     await conn.query(query, (err, res) => {
       if (err) {
         console.error(err);
